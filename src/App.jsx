@@ -44,6 +44,10 @@ function App() {
           <h4 className="text-center">Lista de tareas</h4>
           <ul className="list-group">
           {
+
+          tareas.length === 0 ? (
+          <li className="list-group-item">No hay tareas</li>
+          ) : (
             tareas.map(item => (
             <li className="list-group-item" key={item.id}>
               <span className="lead"> {item.nombreTarea} </span>
@@ -61,6 +65,8 @@ function App() {
               </button>
             </li>
             ))
+          )
+
           }
 
 

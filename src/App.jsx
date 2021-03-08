@@ -4,12 +4,15 @@ function App() {
   const [tarea, setTarea] = React.useState("");
   const [tareas, setTareas] = React.useState([]);
   const [modoEdicion, setModoEdicion] = React.useState(false);
+  const [id, setId] = React.useState("");
+  const [error, setError] = React.useState(null);
 
   const agregarTarea = (e) => {
     e.preventDefault();
     console.log(tarea);
     if (!tarea.trim()) {
       console.log("El elemento esta vacio");
+      setError("Escriba algo por favor... ");
       return;
     }
     console.log(tarea);
@@ -17,10 +20,11 @@ function App() {
     setTareas([...tareas, { id: shortid.generate(), nombreTarea: tarea }]);
 
     setTarea("");
+    setError(null);
   };
 
   const eliminarTarea = (id) => {
-    //console.log(id)
+    console.log(id);
     const arrayFiltrado = tareas.filter((item) => item.id !== id);
     setTareas(arrayFiltrado);
   };
@@ -28,6 +32,26 @@ function App() {
   const editar = (item) => {
     console.log(item);
     setModoEdicion(true);
+    setTarea(item);
+    setId(item.id);
+    setError(null);
+  };
+
+  const editarTarea = (e) => {
+    e.preventDefault();
+    if (!tarea.trim()) {
+      console.log("Elemento vacio");
+      return;
+    }
+
+    const arrayEditado = tareas.map((item) =>
+      item.id === id ? { id, nombreTarea: tarea } : item
+    );
+    setTareas(arrayEditado);
+    setModoEdicion(false);
+    setTarea("");
+    setId("");
+    setError(null);
   };
 
   return (
@@ -64,6 +88,8 @@ function App() {
         <div className="col-4">
           <h4 className="text-center">Formulario</h4>
           <form onSubmit={agregarTarea}>
+            {error ? <span className="text-danger">{error}</span> : null}
+
             <input
               type="text"
               className="form-control mb-2"

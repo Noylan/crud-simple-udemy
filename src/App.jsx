@@ -32,11 +32,12 @@ function App() {
   const editar = (item) => {
     console.log(item);
     setModoEdicion(true);
-    setTarea(item);
+    setTarea(item.nombreTarea);
     setId(item.id);
     setError(null);
   };
 
+  //boton
   const editarTarea = (e) => {
     e.preventDefault();
     if (!tarea.trim()) {
@@ -52,6 +53,7 @@ function App() {
     setTarea("");
     setId("");
     setError(null);
+    
   };
 
   return (
@@ -86,8 +88,14 @@ function App() {
           </ul>
         </div>
         <div className="col-4">
-          <h4 className="text-center">Formulario</h4>
-          <form onSubmit={agregarTarea}>
+          <h4 className="text-center">
+              
+          {
+            modoEdicion ? 'Editar Tarea' : 'Agregar tarea'
+          }
+
+          </h4>
+          <form onSubmit={modoEdicion ? editarTarea : agregarTarea}>
             {error ? <span className="text-danger">{error}</span> : null}
 
             <input
@@ -97,9 +105,19 @@ function App() {
               onChange={(e) => setTarea(e.target.value)}
               value={tarea}
             />
-            <button className="btn btn-dark btn-block" type="submit">
-              Agregar
-            </button>
+
+            {
+              modoEdicion ? (
+                <button className="btn btn-warning btn-block" type="submit">
+                  Editar
+                </button>
+              ) : (
+                <button className="btn btn-dark btn-block" type="submit">
+                  Agregar
+                </button>
+              )
+            }
+            
           </form>
         </div>
       </div>
